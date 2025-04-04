@@ -19,23 +19,25 @@ const createUser  = asyncHandler(async (req, res) => {
     }
 
 });
+const loginUserCtrl = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+    console.log(email, password);
 
-const loginUserCtrl = asyncHandler(async(req,res)=>{
-    const {email, pasword} = req.body;
-    // console.log(email, password);
-    const findUser = await User.findOne({email});
-    if(findUser = await User.findUser.isPasswordMatched(password)){
+    // Find the user by email
+    const findUser  = await User.findOne({ email });
+
+    // Check if user exists and if the password matches
+    if (findUser  && await findUser .isPasswordMatched(password)) {
         res.json({
-            id:findUser?._id,
-            firstname:findUser?.lastName,
-            email:findUser?.email,
-            token: generateToken(findUser?._id),  
-        }
-        );
-    }else{
-        throw new Error("invalid Credential")
+            id: findUser ._id,
+            firstname: findUser .firstName, // Assuming you meant firstName instead of lastName
+            email: findUser .email,
+            token: generateToken(findUser ._id),  
+        });
+    } else {
+        throw new Error("Invalid credentials");
     }
-})
+});
 
 const getallUser = asyncHandler (async (req,res)=>{
     try {
@@ -78,15 +80,16 @@ const deleteaUser = asyncHandler(async (req,res)=>{
 
 
 const updateUser = asyncHandler(async(req,res)=>{
+    console.log(req.user);
     const {id} = req.params;
     try{
         const updateUser = await User.findByIdAndUpdate(
             id,{
             
-            firstname: req.body.firstName,
-            lastname: req.body.lastName,
+            firstname: req?.body?.firstName,
+            lastname: req?.body?.lastName,
 
-            email: req.body.email,
+            email: req?.body?.email,
 
             // firstname: req.body.firstname
 
